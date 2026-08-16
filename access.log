@@ -1,0 +1,5 @@
+2026-08-15 INFO user=alice action=login
+2026-08-15 ERROR user=bob action=payment
+2026-08-15 INFO user=alice action=logout
+2026-08-15 ERROR user=carol action=payment
+2026-08-15 INFO user=bob action=login
