@@ -1,30 +1,29 @@
 name: Repository Health Check
 
 on:
-push:
-branches:
-- main
-pull_request:
-branches:
-- main
-workflow_dispatch:
+  push:
+   branches:
+     - main
+  pull_request:
+     branches:
+     - main
+  workflow_dispatch:
 
 permissions:
- contents: read
+   contents: read
 
 jobs:
-health-check:
-runs-on: ubuntu-latest
+  health-check:
+   runs-on: ubuntu-latest
 
-steps:
-- name: Checkout repository
-  uses: actions/checkout@v4
-  with:
-      persist-credentials: false
+   steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+         persist-credentials: false
 
-- name: Make health-check script executable
-  run: chmod u+x repository-healthcheck.sh
+    - name: Make health-check script executable
+      run:  chmod u+x repository-healthcheck.sh
 
-- name: Run repository health-check
-  run: ./repository-healthcheck.sh
-
+    - name: Run repository health-check
+      run:  ./repository-healthcheck.sh
