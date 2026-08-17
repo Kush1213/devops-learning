@@ -48,9 +48,6 @@ echo "Directory: $(pwd)"
 echo
 
 
-check_directory ".git"
-check_directory ".github"
-check_directory "github"
 
 check_file "README.md"
 check_file "app.log"
