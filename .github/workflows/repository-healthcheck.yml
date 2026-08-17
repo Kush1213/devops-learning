@@ -1,0 +1,64 @@
+name: Repository Health Check
+
+on:
+push:
+branches:
+-main
+pull_request:
+branches:
+cat > .github/workflows/repository-healthcheck.yml << 'EOF'
+name: Repository Health Check
+
+on:
+push:
+branches:
+- main
+pull_request:
+branches:
+- main
+workflow_dispatch:
+
+jobs:
+health-check:
+runs-on: ubuntu-latest
+
+steps:
+- name: Checkout repository
+  uses: actions/checkout@v4
+
+-name: Make health-check script executable
+cat > .github/workflows/repository-healthcheck.yml << 'EOF'
+name: Repository Health Check
+
+on:
+push:
+branches:
+-main
+pull_request:
+branches:
+cat > .github/workflows/repository-healthcheck.yml << 'EOF'
+name: Repository Health Check
+
+on:
+push:
+branches:
+- main
+pull_request:
+branches:
+- main
+workflow_dispatch:
+
+jobs:
+health-check:
+runs-on: ubuntu-latest
+
+steps:
+- name: Checkout repository
+  uses: actions/checkout@v4
+
+- name: Make health-check script executable
+
+run: chmod u+x repository-healthcheck.sh
+
+- name: Run repository health-check
+  run: ./repository-healthcheck.sh
