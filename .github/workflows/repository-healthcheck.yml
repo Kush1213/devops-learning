@@ -43,12 +43,12 @@ jobs:
 
       - name: Display selected log level
         env:
-          LOG_LEVEL: ${{ inputs.log_level }}
+          LOG_LEVEL: ${{ inputs.log_level || 'ALL' }}
         run: |
           echo "Selected log level: $LOG_LEVEL"
 
       - name: Run log report
         env:
-          LOG_LEVEL: ${{ inputs.log_level }}
+          LOG_LEVEL: ${{ inputs.log_level || 'ALL' }}
         run: |
           ./log-report.sh app.log "$LOG_LEVEL"
