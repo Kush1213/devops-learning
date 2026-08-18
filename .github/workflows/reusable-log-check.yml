@@ -21,11 +21,12 @@ jobs:
 
       - name: Run log report
         run: |
-         echo "## Log Report" >> "$GITHUB_STEP_SUMMARY"
-         echo "" >> "$GITHUB_STEP_SUMMARY"
-         echo "**Selected level:** \`${{ inputs.log_level }}\`" >> "$GITHUB_STEP_SUMMARY"
-         echo "" >> "$GITHUB_STEP_SUMMARY"
-         echo '```text' >> "GITHUB_STEP_SUMMARY"
-         ./log-report.sh app.log "${{ inputs.log_level }} | tee -a "$GITHUB_STEP_SUMMARY"
-         echo '```' >> "$GITHUB_STEP_SUMMARY"
+         {
+            echo "## Log Report"
+            echo
+            echo "**Selected level:** ${{ inputs.log_level }}
+            echo
+            echo "Report output:"
+            ./log-report.sh app.log "${{ inputs.log_level }}
+          } >> "$GITHUB_STEP_SUMMARY"
 
