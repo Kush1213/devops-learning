@@ -44,4 +44,4 @@ jobs:
       run: echo "Selected log level: ${{ inputs.log_level }}"
 
     - name: Run log report
-      run : ./log-report.sh app.log "${{ inputs.log_level }}"
+      run: ./log-report.sh app.log "${{ inputs.log_level }}"
