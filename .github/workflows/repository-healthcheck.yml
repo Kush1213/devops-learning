@@ -107,7 +107,7 @@ jobs:
        uses: actions/checkout@v4
 
      - name: Cache shellcheck
-         id: cache-shellcheck
+       id: cache-shellcheck
        uses: actions/cache@v4
        with:
          path: /usr/bin/shellcheck
