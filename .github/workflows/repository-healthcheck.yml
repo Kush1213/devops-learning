@@ -57,7 +57,8 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: |
+          name: repository-health-report
+          path: |
              app.log
              health-report.txt
           if-no-files-found: warn
