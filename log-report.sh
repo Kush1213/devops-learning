@@ -19,16 +19,16 @@ fi
 
 case "$level" in
 ERROR)
-grep "ERROR" "$log_file"
+grep "ERROR" "$log_file" || true
 ;;
 WARN)
-grep "WARN" "$log_file"
+grep "WARN" "$log_file" || true
 ;;
 INFO)
-grep "INFO" "$log_file"
+grep "INFO" "$log_file" || true
 ;;
 ALL)
-cat "$log_file"
+cat "$log_file" || true
 ;;
 *)
  echo "Unsupported level: $level"
