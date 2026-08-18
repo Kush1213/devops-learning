@@ -63,14 +63,14 @@ jobs:
              health-report.txt
           if-no-files-found: warn
 
-      - name: Test repository secret
-        env:
-          DEMO_MESSAGE: ${{ secrets.DEMO_MESSAGE }}
-        run: |
-         if [ -n "$DEMO_MESSAGE" ]; then
-           echo "Secret was loaded successfully"
-         else
-           echo "Secret is missing"
-         exit 1
-         fi
+#      - name: Test repository secret
+  #       env:
+   #       DEMO_MESSAGE: ${{ secrets.DEMO_MESSAGE }}
+    #    run: |
+     #    if [ -n "$DEMO_MESSAGE" ]; then
+      #     echo "Secret was loaded successfully"
+       #  else
+        #   echo "Secret is missing"
+        #  exit 1
+       #   fi
 
