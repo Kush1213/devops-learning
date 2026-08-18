@@ -100,7 +100,7 @@ jobs:
 
 
   reusable-log-check:
-     uses: ./.github.workflows/reusable-log-check.yml
+     uses: ./.github/workflows/reusable-log-check.yml
      with:
        log_level: ERROR
 
