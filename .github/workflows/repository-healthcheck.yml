@@ -98,6 +98,28 @@ jobs:
        - name: Run log report
          run: ./log-report.sh app.log "${{ matrix.level }}"
 
+  cross-platform-check:
+     name: Check on ${{ matrix.os }}
+     runs-on: ${{ matrix.os }}
+
+     strategy:
+       matrix:
+         os:
+          - ubuntu-latest
+          - windows-latest
+
+     steps:
+        - name: Checkout repository
+          uses: actions/checkout@v4
+
+        - name: Checkout repository files
+          shell: bash
+          run: |
+           test -f app.log
+           test -f log-report.sh
+           echo "Required files are present."
+
+
   deploy-production:
     needs: health-check
     runs-on: ubuntu-latest
