@@ -22,14 +22,14 @@ jobs:
       - name: Run log report
         run: |
           report="$(./log-report.sh app.log "${{ inputs.log_level }}")"
-          printf '%s/n' "$report"
+          printf '%s\n' "$report"
 
           {
            echo "## Log Report"
            echo
            echo "**Selected level:** ${{ inputs.log_level }}"
            echo
-           printf '%s/n' "$report"
+           printf '%s\n' "$report"
           } >> "$GITHUB_STEP_SUMMARY"
 
 
