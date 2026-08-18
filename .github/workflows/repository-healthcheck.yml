@@ -51,4 +51,13 @@ jobs:
         env:
           LOG_LEVEL: ${{ inputs.log_level || 'ALL' }}
         run: |
-          ./log-report.sh app.log "$LOG_LEVEL"
+          ./log-report.sh app.log "$LOG_LEVEL" | tee health-report.txt
+
+      - name: Save health-check report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: |
+             app.log
+             health-report.txt
+          if-no-files-found: warn
