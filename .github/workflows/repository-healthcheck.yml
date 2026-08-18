@@ -74,3 +74,14 @@ jobs:
         #  exit 1
        #   fi
 
+
+  deploy-production:
+    needs: health-check
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Simulate production deployment
+        run: |
+          echo "Production deployment approved."
+          echo "Deploying commit: $GITHUB_SHA"
