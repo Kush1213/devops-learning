@@ -98,6 +98,21 @@ jobs:
        - name: Run log report
          run: ./log-report.sh app.log "${{ matrix.level }}"
 
+  shellcheck:
+    name: Shellcheck Bash Scripts
+    runs-on: ubuntu-latest
+
+    steps:
+     - name: Checkout repository
+       uses: actions/checkout@v4
+
+     - name: Install shellcheck
+       run: sudo apt-get update && sudo apt-get install -y shellcheck
+
+     - name: Run shellcheck
+       run: shellcheck repository-healthcheck.sh log-report.sh
+
+
 
   reusable-log-check:
      name: Reusable check for ${{ matrix.level }}
