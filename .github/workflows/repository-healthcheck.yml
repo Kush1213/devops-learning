@@ -74,6 +74,29 @@ jobs:
         #  exit 1
        #   fi
 
+  log-level-check:
+      name: Check ${{ matrix.level }} logs
+      runs-on: ubuntu-latest
+
+      strategy:
+        matrix:
+         level:
+          - ERROR
+          - WARN
+          - INFO
+          - ALL
+
+      steps:
+       - name: Checkout Repository
+         uses: action/checkout@v4
+         with:
+           persist-credentials: false
+
+       - name: Make log report executable
+         run: chmod u+x log-report.sh
+
+       - name: Run log report
+         run: ./log-report/sh app.log "$(( matrix.level }}"
 
   deploy-production:
     needs: health-check
