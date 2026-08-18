@@ -106,7 +106,15 @@ jobs:
      - name: Checkout repository
        uses: actions/checkout@v4
 
+     - name: Cache shellcheck
+        id: cache-shellcheck
+       uses: actions/cache@v4
+       with:
+         path: /usr/bin/shellcheck
+         key: shellcheck -${{ runner.os }}
+
      - name: Install shellcheck
+       if: steps.cache-shellcheck.outputs.cache-hit != 'true'
        run: sudo apt-get update && sudo apt-get install -y shellcheck
 
      - name: Run shellcheck
