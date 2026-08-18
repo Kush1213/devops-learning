@@ -21,7 +21,7 @@ jobs:
 
       - name: Run log report
         run: |
-          report= "$(./log-report.sh app.log "${{ inputs.log_level }}")"
+          report="$(./log-report.sh app.log "${{ inputs.log_level }}")"
           printf '%s/n' "$report"
 
           {
