@@ -8,6 +8,18 @@ on:
      branches:
      - main
   workflow_dispatch:
+    inputs:
+      log_level:
+       description: "Log Level to check"
+       required: true
+       default: "ALL"
+       type: choice
+       options:
+          - ERROR
+          - WARN
+          - INFO
+          - ALL
+
 
 permissions:
    contents: read
@@ -27,3 +39,9 @@ jobs:
 
     - name: Run repository health-check
       run:  ./repository-healthcheck.sh
+
+    - name: Display selected log level
+      run: echo "Selected log level: ${{ inputs.log_level }}"
+
+    - name: Run log report
+      run : ./log-report.sh app.log "${{ inputs.log_level }}"
