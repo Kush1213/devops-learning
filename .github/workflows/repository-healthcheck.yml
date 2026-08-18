@@ -96,7 +96,7 @@ jobs:
          run: chmod u+x log-report.sh
 
        - name: Run log report
-         run: ./log-report/sh app.log "$(( matrix.level }}"
+         run: ./log-report.sh app.log "${{ matrix.level }}"
 
   deploy-production:
     needs: health-check
