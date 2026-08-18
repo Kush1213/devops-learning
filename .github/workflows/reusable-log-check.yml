@@ -21,12 +21,24 @@ jobs:
 
       - name: Run log report
         run: |
-         {
-            echo "## Log Report"
-            echo
-            echo "**Selected level:** ${{ inputs.log_level }}
-            echo
-            echo "Report output:"
-            ./log-report.sh app.log "${{ inputs.log_level }}
+          report= "$(./log-report.sh app.log "${{ inputs.log_level }}")"
+          printf '%s/n' "$report"
+
+          {
+           echo "## Log Report"
+           echo
+           echo "**Selected level:** ${{ inputs.log_level }}"
+           echo
+           printf '%s/n' "$report"
           } >> "$GITHUB_STEP_SUMMARY"
 
+
+#    This section is when you only want to display in the Log summary
+#         {
+ #           echo "## Log Report"
+  #          echo
+   #         echo "**Selected level:** ${{ inputs.log_level }}
+   #         echo
+    #        echo "Report output:"
+     #       ./log-report.sh app.log "${{ inputs.log_level }}
+     #     } >> "$GITHUB_STEP_SUMMARY"
