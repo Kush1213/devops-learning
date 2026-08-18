@@ -6,7 +6,7 @@ on:
     inputs:
       log_level:
        required: true
-        type: string
+       type: string
 
 jobs:
   log-check:
