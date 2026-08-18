@@ -98,6 +98,12 @@ jobs:
        - name: Run log report
          run: ./log-report.sh app.log "${{ matrix.level }}"
 
+
+  reusable-log-check:
+     uses: ./.github.workflows/reusable-log-check.yml
+     with:
+       log_level: ERROR
+
   cross-platform-check:
      name: Check on ${{ matrix.os }}
      runs-on: ${{ matrix.os }}

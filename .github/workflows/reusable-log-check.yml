@@ -1,0 +1,24 @@
+name: Reusable Log Check
+
+
+on:
+  workflow_call:
+    inputs:
+      log_level:
+       required: true
+        type: string
+
+jobs:
+  log-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Make log report executable
+        run: chmod u+x log-report.sh
+
+      - name: Run log report
+        run: ./log-report.sh app.log "${{ inputs.log_level }}"
+
