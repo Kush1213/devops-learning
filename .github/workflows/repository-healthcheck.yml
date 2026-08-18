@@ -100,9 +100,18 @@ jobs:
 
 
   reusable-log-check:
+     name: Reusable check for ${{ matrix.level }}
+     strategy:
+      matrix:
+        level:
+          - ERROR
+          - WARN
+          - INFO
+          - ALL
+
      uses: ./.github/workflows/reusable-log-check.yml
      with:
-       log_level: ERROR
+       log_level: ${{ matrix.level }}
 
   cross-platform-check:
      name: Check on ${{ matrix.os }}
