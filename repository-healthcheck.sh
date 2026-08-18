@@ -36,7 +36,7 @@ fi
 check_directory() {
 local directory_path="$1"
 
-if [ -d "directory_path" ]; then
+if [ -d "$directory_path" ]; then
 print_result 0 "$directory_path exists"
 else
 print_result 1 "$directory_path is missing"
@@ -48,7 +48,9 @@ echo "Directory: $(pwd)"
 echo
 
 
-
+check_directory "."
+check_directory ".github"
+check_directory ".git"
 check_file "README.md"
 check_file "app.log"
 check_file "access.log"
