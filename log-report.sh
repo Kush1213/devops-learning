@@ -27,7 +27,7 @@ grep "WARN" "$log_file"
 INFO)
 grep "INFO" "$log_file"
 ;;
-All)
+ALL)
 cat "$log_file"
 ;;
 *)
