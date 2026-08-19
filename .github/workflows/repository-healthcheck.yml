@@ -44,8 +44,7 @@ jobs:
       - name: Display selected log level
         env:
           LOG_LEVEL: ${{ inputs.log_level || 'ALL' }}
-        run: |
-          echo "Selected log level: $LOG_LEVEL"
+        run: echo "Selected log level: $LOG_LEVEL"
 
       - name: Run log report
         env:
@@ -59,102 +58,58 @@ jobs:
         with:
           name: repository-health-report
           path: |
-             app.log
-             health-report.txt
+            app.log
+            health-report.txt
           if-no-files-found: warn
 
-#      - name: Test repository secret
-  #       env:
-   #       DEMO_MESSAGE: ${{ secrets.DEMO_MESSAGE }}
-    #    run: |
-     #    if [ -n "$DEMO_MESSAGE" ]; then
-      #     echo "Secret was loaded successfully"
-       #  else
-        #   echo "Secret is missing"
-        #  exit 1
-       #   fi
+                # Test repository secret
+      # Uncomment this section only when DEMO_MESSAGE exists
+      #
+      # - name: Test repository secret
+      #   env:
+      #     DEMO_MESSAGE: ${{ secrets.DEMO_MESSAGE }}
+      #   run: |
+      #     if [ -n "$DEMO_MESSAGE" ]; then
+      #       echo "Secret was loaded successfully."
+      #     else
+      #       echo "Secret is missing."
+      #       exit 1
+      #     fi
 
-       - name: Write health-check summary
-         if: always()
-         run: |
+      - name: Write health-check summary
+        if: always()
+        run: |
           {
-           echo "## Repository Health Check"
-           echo
-           echo "| Check | Result |"
-           echo "|---|---|"
+            echo "## Repository Health Check"
+            echo
+            echo "| Check | Result |"
+            echo "|---|---|"
 
-           for file in README.md app.log access.log app-config.sh; do
-            if [ -e "$file" ]; then
-               echo "| \`$file\` | Present |"
+            for file in README.md app.log access.log app-config.sh; do
+              if [ -e "$file" ]; then
+                echo "| \`$file\` | Present |"
+              else
+                echo "| \`$file\` | Missing |"
+              fi
+            done
+
+            echo
+
+            if [ -f README.md ] &&
+               [ -f app.log ] &&
+               [ -f access.log ] &&
+               [ -f app-config.sh ]; then
+              echo "All required files are present."
             else
-               echo "| \`$file\` | Missing |"
+              echo "One or more required files are missing."
             fi
-           done
-
-           echo
-           if [ -f README.md ] &&
-              [ -f app.log ] &&
-              [ -f access.log ] &&
-              [ -f app-config.sh]; then
-             echo " All required files are present."
-           else
-             echo " One or more required files are missing."
-           fi
           } >> "$GITHUB_STEP_SUMMARY"
 
-
-
   log-level-check:
-      name: Check ${{ matrix.level }} logs
-      runs-on: ubuntu-latest
-
-      strategy:
-        matrix:
-         level:
-          - ERROR
-          - WARN
-          - INFO
-          - ALL
-
-      steps:
-       - name: Checkout Repository
-         uses: actions/checkout@v4
-         with:
-           persist-credentials: false
-
-       - name: Make log report executable
-         run: chmod u+x log-report.sh
-
-       - name: Run log report
-         run: ./log-report.sh app.log "${{ matrix.level }}"
-
-  shellcheck:
-    name: Shellcheck Bash Scripts
+    name: Check ${{ matrix.level }} logs
     runs-on: ubuntu-latest
 
-    steps:
-     - name: Checkout repository
-       uses: actions/checkout@v4
-
-     - name: Cache shellcheck
-       id: cache-shellcheck
-       uses: actions/cache@v4
-       with:
-         path: /usr/bin/shellcheck
-         key: shellcheck-${{ runner.os }}
-
-     - name: Install shellcheck
-       if: steps.cache-shellcheck.outputs.cache-hit != 'true'
-       run: sudo apt-get update && sudo apt-get install -y shellcheck
-
-     - name: Run shellcheck
-       run: shellcheck repository-healthcheck.sh log-report.sh
-
-
-
-  reusable-log-check:
-     name: Reusable check for ${{ matrix.level }}
-     strategy:
+    strategy:
       matrix:
         level:
           - ERROR
@@ -162,31 +117,69 @@ jobs:
           - INFO
           - ALL
 
-     uses: ./.github/workflows/reusable-log-check.yml
-     with:
-       log_level: ${{ matrix.level }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Make log report executable
+        run: chmod u+x log-report.sh
+
+      - name: Run log report
+        run: ./log-report.sh app.log "${{ matrix.level }}"
+
+  shellcheck:
+    name: ShellCheck Bash scripts
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install ShellCheck
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y shellcheck
+
+      - name: Run ShellCheck
+        run: shellcheck repository-healthcheck.sh log-report.sh
+
+  reusable-log-check:
+    name: Reusable check for ${{ matrix.level }}
+
+    strategy:
+      matrix:
+        level:
+          - ERROR
+          - WARN
+          - INFO
+          - ALL
+
+    uses: ./.github/workflows/reusable-log-check.yml
+    with:
+      log_level: ${{ matrix.level }}
 
   cross-platform-check:
-     name: Check on ${{ matrix.os }}
-     runs-on: ${{ matrix.os }}
+    name: Check on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
 
-     strategy:
-       matrix:
-         os:
+    strategy:
+      matrix:
+        os:
           - ubuntu-latest
           - windows-latest
 
-     steps:
-        - name: Checkout repository
-          uses: actions/checkout@v4
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-        - name: Checkout repository files
-          shell: bash
-          run: |
-           test -f app.log
-           test -f log-report.sh
-           echo "Required files are present."
-
+      - name: Check repository files
+        shell: bash
+        run: |
+          test -f app.log
+          test -f log-report.sh
+          echo "Required files are present."
 
   deploy-production:
     needs: health-check
