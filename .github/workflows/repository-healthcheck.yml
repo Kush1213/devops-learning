@@ -26,6 +26,7 @@ permissions:
   contents: read
 
 jobs:
+
   health-check:
     runs-on: ubuntu-latest
 
@@ -43,12 +44,12 @@ jobs:
 
       - name: Display selected log level
         env:
-          LOG_LEVEL: "${{ inputs.log_level || 'ALL' }}"
+          LOG_LEVEL: ${{ inputs.log_level || 'ALL' }}
         run: echo "Selected log level: $LOG_LEVEL"
 
       - name: Run log report
         env:
-          LOG_LEVEL: "${{ inputs.log_level || 'ALL' }}"
+          LOG_LEVEL: ${{ inputs.log_level || 'ALL' }}
         run: |
           ./log-report.sh app.log "$LOG_LEVEL" | tee health-report.txt
 
@@ -61,20 +62,6 @@ jobs:
             app.log
             health-report.txt
           if-no-files-found: warn
-
-      # Test repository secret
-      # Uncomment this section only when DEMO_MESSAGE exists
-      #
-      # - name: Test repository secret
-      #   env:
-      #     DEMO_MESSAGE: ${{ secrets.DEMO_MESSAGE }}
-      #   run: |
-      #     if [ -n "$DEMO_MESSAGE" ]; then
-      #       echo "Secret was loaded successfully."
-      #     else
-      #       echo "Secret is missing."
-      #       exit 1
-      #     fi
 
       - name: Write health-check summary
         if: always()
@@ -95,15 +82,13 @@ jobs:
 
             echo
 
-            if [ -f README.md ] && \
-               [ -f app.log ] && \
-               [ -f access.log ] && \
-               [ -f app-config.sh ]; then
+            if [ -f README.md ] && [ -f app.log ] && [ -f access.log ] && [ -f app-config.sh ]; then
               echo "All required files are present."
             else
               echo "One or more required files are missing."
             fi
           } >> "$GITHUB_STEP_SUMMARY"
+
 
   log-level-check:
     name: Check ${{ matrix.level }} logs
@@ -129,6 +114,7 @@ jobs:
       - name: Run log report
         run: ./log-report.sh app.log "${{ matrix.level }}"
 
+
   shellcheck:
     name: ShellCheck Bash scripts
     runs-on: ubuntu-latest
@@ -145,6 +131,7 @@ jobs:
       - name: Run ShellCheck
         run: shellcheck repository-healthcheck.sh log-report.sh
 
+
   reusable-log-check:
     name: Reusable check for ${{ matrix.level }}
 
@@ -157,8 +144,10 @@ jobs:
           - ALL
 
     uses: ./.github/workflows/reusable-log-check.yml
+
     with:
       log_level: ${{ matrix.level }}
+
 
   cross-platform-check:
     name: Check on ${{ matrix.os }}
@@ -180,6 +169,7 @@ jobs:
           test -f app.log
           test -f log-report.sh
           echo "Required files are present."
+
 
   deploy-production:
     needs: health-check
