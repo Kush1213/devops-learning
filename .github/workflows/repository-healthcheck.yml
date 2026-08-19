@@ -74,6 +74,36 @@ jobs:
         #  exit 1
        #   fi
 
+       - name: Write health-check summary
+         if: always()
+         run: |
+          {
+           echo "## Repository Health Check"
+           echo
+           echo "| Check | Result |"
+           echo "|---|---|"
+
+           for file in README.md app.log access.log app-config.sh; do
+            if [ -e "$file" ]; then
+               echo "| \`$file\` | Present |"
+            else
+               echo "| \`$file\` | Missing |"
+            fi
+           done
+
+           echo
+           if [ -f README.md ] &&
+              [ -f app.log ] &&
+              [ -f access.log ] &&
+              [ -f app-config.sh]; then
+             echo " All required files are present."
+           else
+             echo " One or more required files are missing."
+           fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+
+
   log-level-check:
       name: Check ${{ matrix.level }} logs
       runs-on: ubuntu-latest
