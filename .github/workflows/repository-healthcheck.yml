@@ -95,9 +95,9 @@ jobs:
 
             echo
 
-            if [ -f README.md ] &&
-               [ -f app.log ] &&
-               [ -f access.log ] &&
+            if [ -f README.md ] && \
+               [ -f app.log ] && \
+               [ -f access.log ] && \
                [ -f app-config.sh ]; then
               echo "All required files are present."
             else
