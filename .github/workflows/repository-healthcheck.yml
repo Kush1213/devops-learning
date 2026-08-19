@@ -62,7 +62,7 @@ jobs:
             health-report.txt
           if-no-files-found: warn
 
-                # Test repository secret
+      # Test repository secret
       # Uncomment this section only when DEMO_MESSAGE exists
       #
       # - name: Test repository secret
