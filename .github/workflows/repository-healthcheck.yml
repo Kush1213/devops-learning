@@ -63,6 +63,24 @@ jobs:
              health-report.txt
           if-no-files-found: warn
 
+      - name: Write health-check summary
+        if: always()
+        run: |
+          echo "## Repository Health Check" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Check | Result |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|---|---|" >> "$GITHUB_STEP_SUMMARY"
+
+          for file in README.md app.log access.log app-config.sh; do
+            if [ -e "$file" ]; then
+              echo "| $file | Present |" >> "$GITHUB_STEP_SUMMARY"
+            else
+              echo "| $file | Missing |" >> "$GITHUB_STEP_SUMMARY"
+            fi
+          done
+
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "See the detailed health-check output in the job log." >> "$GITHUB_STEP_SUMMARY"
 #      - name: Test repository secret
   #       env:
    #       DEMO_MESSAGE: ${{ secrets.DEMO_MESSAGE }}
