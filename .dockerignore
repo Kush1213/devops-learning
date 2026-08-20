@@ -1,0 +1,7 @@
+.git
+.github
+*.tmp
+*.swp
+.env
+.env.*
+config.env

@@ -1,0 +1,10 @@
+services:
+ repository-healthcheck:
+  build:
+   context: .
+   dockerfile: Dockerfile
+  image: repository-healthcheck:compose
+  env_file:
+   - config.env
+  command: ["./repository-healthcheck.sh"]
+
