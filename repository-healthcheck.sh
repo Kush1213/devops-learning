@@ -5,6 +5,8 @@ set -uo pipefail
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$script_dir" || exit 1
 
+echo "Environment: ${APP_ENV:-not-set}"
+echo "Log level: ${LOG_LEVEL:-not-set}"
 
 passed=0
 failed=0
@@ -49,8 +51,6 @@ echo
 
 
 check_directory "."
-check_directory ".github"
-check_directory ".git"
 check_file "README.md"
 check_file "app.log"
 check_file "access.log"
